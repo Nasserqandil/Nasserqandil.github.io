@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deema Qandeel — QA &amp; Mobile Development</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#22201B;
+    --ink-soft:#4A463C;
+    --muted:#847E6E;
+    --paper:#EFE9DA;
+    --paper-raised:#E6DFCB;
+    --line:#D9D0B8;
+    --pass:#4B6357;
+    --pass-soft:#E1E3D6;
+    --flag:#A24B3B;
+    --flag-soft:#EDDED6;
+    --serif: "Fraunces", Georgia, serif;
+    --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#EDE7D8; --ink-soft:#C7BFA9; --muted:#948B72;
+      --paper:#1C1912; --paper-raised:#252017; --line:#3A3324;
+      --pass:#8CA895; --pass-soft:#26302A; --flag:#D08669; --flag-soft:#332720;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#EDE7D8; --ink-soft:#C7BFA9; --muted:#948B72;
+    --paper:#1C1912; --paper-raised:#252017; --line:#3A3324;
+    --pass:#8CA895; --pass-soft:#26302A; --flag:#D08669; --flag-soft:#332720;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth; scroll-padding-top: calc(env(safe-area-inset-top,0px) + 20px);}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
+
+  /* ---- top bar ---- */
+  header.bar{
+    position:sticky; top:0; z-index:10;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    padding-top:env(safe-area-inset-top,0px);
+  }
+  .bar-inner{max-width:920px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px;}
+  .bar-name{font-family:var(--mono); font-size:13px; letter-spacing:.02em;}
+  .bar-links{display:flex; gap:18px; font-family:var(--mono); font-size:12.5px;}
+  .bar-links a{text-decoration:none; color:var(--muted); border-bottom:1px solid transparent; padding-bottom:2px;}
+  .bar-links a:hover{color:var(--ink); border-color:var(--ink);}
+  .theme-btn{
+    font-family:var(--mono); font-size:12px; background:none; border:1px solid var(--line);
+    color:var(--muted); border-radius:3px; padding:4px 9px; cursor:pointer;
+  }
+  .theme-btn:hover{color:var(--ink); border-color:var(--ink-soft);}
+
+  /* ---- hero ---- */
+  .hero{padding:64px 0 48px; border-bottom:1px solid var(--line);}
+  .status-row{display:flex; align-items:center; gap:9px; margin-bottom:22px; font-family:var(--mono); font-size:12.5px; color:var(--muted);}
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--pass); box-shadow:0 0 0 3px var(--pass-soft);}
+  h1{
+    font-family:var(--serif); font-weight:500; font-size:clamp(40px,7vw,64px);
+    line-height:1.03; margin:0 0 14px; letter-spacing:-0.01em;
+  }
+  .role{font-family:var(--serif); font-style:italic; font-weight:400; font-size:clamp(18px,2.6vw,22px); color:var(--ink-soft); margin:0 0 28px; max-width:34ch;}
+  .contact-line{display:flex; flex-wrap:wrap; gap:6px 0; font-family:var(--mono); font-size:13px; color:var(--muted);}
+  .contact-line span{padding:0 12px 0 0; margin-right:12px; border-right:1px solid var(--line);}
+  .contact-line span:last-child{border-right:none;}
+  .contact-line a{text-decoration:none; color:var(--ink-soft);}
+  .contact-line a:hover{color:var(--pass);}
+
+  /* ---- section shell ---- */
+  section{padding:46px 0; border-bottom:1px solid var(--line); scroll-margin-top:70px;}
+  section:last-of-type{border-bottom:none;}
+  .section-head{display:grid; grid-template-columns:120px 1fr; gap:20px; margin-bottom:22px;}
+  .section-tag{font-family:var(--mono); font-size:12px; color:var(--muted); padding-top:4px;}
+  h2{font-family:var(--serif); font-weight:500; font-size:26px; margin:0; letter-spacing:-0.01em;}
+  .section-body{display:grid; grid-template-columns:120px 1fr; gap:20px;}
+  .section-body > p{grid-column:2;}
+
+  p{margin:0 0 14px; color:var(--ink-soft); max-width:62ch;}
+  p:last-child{margin-bottom:0;}
+
+  /* ---- experience / education timeline ---- */
+  .entry{display:grid; grid-template-columns:120px 1fr; gap:20px; padding:18px 0; border-top:1px solid var(--line);}
+  .entry:first-child{border-top:none; padding-top:0;}
+  .entry-date{font-family:var(--mono); font-size:12px; color:var(--muted); padding-top:3px;}
+  .entry-title{font-family:var(--sans); font-weight:600; font-size:16.5px; margin-bottom:6px;}
+  .entry-org{color:var(--muted); font-weight:400;}
+
+  /* ---- skills ---- */
+  .skill-groups{grid-column:2; display:grid; grid-template-columns:1fr 1fr; gap:28px 32px;}
+  @media (max-width:640px){.skill-groups{grid-template-columns:1fr;}}
+  .skill-group h3{
+    font-family:var(--mono); font-weight:500; font-size:11.5px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--muted); margin:0 0 10px;
+  }
+  .skill-group ul{list-style:none; margin:0; padding:0;}
+  .skill-group li{
+    padding:8px 0; border-top:1px solid var(--line); font-size:14.5px; color:var(--ink-soft);
+    display:flex; justify-content:space-between; gap:10px;
+  }
+  .skill-group li:first-child{border-top:none;}
+  .skill-note{font-family:var(--mono); font-size:11.5px; color:var(--muted);}
+
+  /* ---- courses grid ---- */
+  .courses{grid-column:2; display:grid; gap:16px;}
+  .course{border-top:1px solid var(--line); padding:16px 0 2px; display:grid; grid-template-columns:1fr auto; gap:8px 16px; align-items:start;}
+  .course:first-child{border-top:none; padding-top:0;}
+  .course-name{font-weight:600; font-size:15px;}
+  .course-org{color:var(--muted); font-size:13.5px; margin-top:2px;}
+  .course-tag{
+    font-family:var(--mono); font-size:11px; color:var(--pass); background:var(--pass-soft);
+    padding:3px 8px; border-radius:3px; white-space:nowrap; height:fit-content;
+  }
+
+  /* ---- projects ---- */
+  .projects{grid-column:2; display:grid; gap:16px;}
+  .project{
+    border-top:1px solid var(--line); padding:18px 0 4px;
+    display:grid; grid-template-columns:1fr auto; gap:6px 16px; align-items:start;
+  }
+  .project:first-child{border-top:none; padding-top:0;}
+  .project-name{font-weight:600; font-size:15.5px;}
+  .project-desc{grid-column:1/-1; margin-top:4px;}
+  .project-link{
+    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
+    text-decoration:none; border:1px solid var(--line); padding:5px 10px; border-radius:3px;
+    white-space:nowrap; height:fit-content; transition:border-color .15s, color .15s;
+  }
+  .project-link:hover{border-color:var(--pass); color:var(--pass);}
+
+  /* ---- activities ---- */
+  .activity-list{grid-column:2; margin:0; padding:0; list-style:none;}
+  .activity-list li{
+    position:relative; padding:10px 0 10px 20px; border-top:1px solid var(--line);
+    font-size:14.5px; color:var(--ink-soft);
+  }
+  .activity-list li:first-child{border-top:none; padding-top:0;}
+  .activity-list li::before{
+    content:"·"; position:absolute; left:2px; top:8px; color:var(--flag); font-size:22px; line-height:0;
+  }
+  .activity-list b{color:var(--ink); font-weight:600;}
+
+  /* ---- footer / contact ---- */
+  footer{padding:52px 0 72px;}
+  .footer-inner{display:grid; grid-template-columns:120px 1fr; gap:20px;}
+  .cta h2{margin-bottom:10px;}
+  .footer-links{grid-column:2; display:flex; flex-wrap:wrap; gap:12px; margin-top:20px;}
+  .footer-links a{
+    text-decoration:none; font-family:var(--mono); font-size:13px; color:var(--ink);
+    border:1px solid var(--line); padding:10px 16px; border-radius:3px; transition:border-color .15s, color .15s;
+  }
+  .footer-links a:hover{border-color:var(--pass); color:var(--pass);}
+  .footer-note{grid-column:2; margin-top:28px; font-family:var(--mono); font-size:11.5px; color:var(--muted);}
+
+  @media (max-width:640px){
+    .section-head, .section-body, .entry, .footer-inner{grid-template-columns:1fr;}
+    .section-tag{padding-top:0;}
+    .skill-groups, .courses, .activity-list, .footer-links, .footer-note, .section-body > p{grid-column:1;}
+  }
+
+  ::selection{background:var(--pass-soft); color:var(--ink);}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-inner">
+    <div class="bar-name">DEEMA QANDEEL</div>
+    <nav class="bar-links">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">MODE</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero" style="border-bottom:none;">
+    <div class="status-row"><span class="dot"></span> Open to QA &amp; mobile development roles — Amman, Jordan</div>
+    <h1>Deema Qandeel</h1>
+    <p class="role">IT graduate testing software the way she reads a spec: closely, and for what's missing.</p>
+    <div class="contact-line">
+      <span>Amman, Jordan</span>
+      <span><a href="mailto:Deemaqandil6@gmail.com">Deemaqandil6@gmail.com</a></span>
+      <span>+962 776155248</span>
+      <span><a href="https://www.linkedin.com/in/deema-qandeel-9ba673244/" target="_blank" rel="noopener">LinkedIn</a></span>
+      <span><a href="https://github.com/Deemaqandeel" target="_blank" rel="noopener">GitHub</a></span>
+    </div>
+  </section>
+
+  <section id="profile">
+    <div class="section-head">
+      <div class="section-tag">Profile</div>
+      <h2>What I'm after</h2>
+    </div>
+    <div class="section-body">
+      <p>An IT graduate from The University of Jordan with a strong interest in quality assurance, software testing, and mobile application development. I bring analytical, detail-oriented thinking sharpened through Governance, Risk, and Compliance work, and I'm drawn to the moment in a build where you have to ask: does this actually hold up? I'm looking to apply that mindset in a QA role while continuing to build depth in software testing.</p>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="section-head">
+      <div class="section-tag">Experience</div>
+      <h2>Work</h2>
+    </div>
+    <div class="section-body">
+      <div style="grid-column:2;">
+        <div class="entry" style="grid-template-columns:120px 1fr;">
+          <div class="entry-date">Dec 2025 —<br>Present</div>
+          <div>
+            <div class="entry-title">FCR Handler <span class="entry-org">— Aramex</span></div>
+            <p>Own first-contact resolution: tracking the share of customer inquiries and issues resolved on the first interaction, without follow-up or escalation. Day to day, this is diagnosis under pressure — the same instinct QA work asks for, just applied to people instead of code.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="section-head">
+      <div class="section-tag">Projects</div>
+      <h2>Built &amp; shipped</h2>
+    </div>
+    <div class="section-body">
+      <div class="projects">
+        <div class="project">
+          <div class="project-name">JU Event Management Planner</div>
+          <a class="project-link" href="https://github.com/demahAbu-rumman/JU-Event-Management-Planeer-flutter.git" target="_blank" rel="noopener">GitHub ↗</a>
+          <p class="project-desc">A Flutter app for planning and keeping track of events at the University of Jordan, built as a team project.</p>
+        </div>
+        <div class="project">
+          <div class="project-name">JU Evaluation System</div>
+          <a class="project-link" href="https://github.com/Deemaqandeel/The-University-of-Jordan-Evaluation-System-.git" target="_blank" rel="noopener">GitHub ↗</a>
+          <p class="project-desc">A system built to support course and instructor evaluation at the University of Jordan.</p>
+        </div>
+        <div class="project">
+          <div class="project-name">Twitter (semi-project)</div>
+          <a class="project-link" href="https://github.com/dot-jordan/Twitter.git" target="_blank" rel="noopener">GitHub ↗</a>
+          <p class="project-desc">A Twitter-inspired practice project built during training with Digital Opportunity Trust (DOT) Jordan.</p>
+        </div>
+        <div class="project">
+          <div class="project-name">EMS — Emergency Medical Services</div>
+          <a class="project-link" href="https://github.com/Deemaqandeel/EMS.git" target="_blank" rel="noopener">GitHub ↗</a>
+          <p class="project-desc">A Flutter app for Emergency Medical Services, built as a group project.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="section-head">
+      <div class="section-tag">Skills</div>
+      <h2>Toolkit</h2>
+    </div>
+    <div class="section-body">
+      <div class="skill-groups">
+        <div class="skill-group">
+          <h3>Build &amp; Test</h3>
+          <ul>
+            <li>Programming <span class="skill-note">Flutter, Java</span></li>
+            <li>Cloud &amp; backend <span class="skill-note">Firebase</span></li>
+            <li>UI/UX design <span class="skill-note">Figma</span></li>
+            <li>QA software <span class="skill-note">JIRA</span></li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h3>Audit &amp; GRC</h3>
+          <ul>
+            <li>Governance platform <span class="skill-note">Diligent One</span></li>
+            <li>Data analytics <span class="skill-note">ACL Analytics</span></li>
+            <li>Languages <span class="skill-note">Arabic, English</span></li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h3>Working style</h3>
+          <ul>
+            <li>Project management</li>
+            <li>Problem-solving &amp; critical thinking</li>
+            <li>Time management</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h3>With others</h3>
+          <ul>
+            <li>Team collaboration</li>
+            <li>Clear written &amp; verbal communication</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="courses">
+    <div class="section-head">
+      <div class="section-tag">Training</div>
+      <h2>Courses</h2>
+    </div>
+    <div class="section-body">
+      <div class="courses">
+        <div class="course">
+          <div>
+            <div class="course-name">Mobile app development with Flutter</div>
+            <div class="course-org">120-hour course — Digital Opportunity Trust (DOT) Jordan &amp; UNICEF Jordan</div>
+          </div>
+          <div class="course-tag">completed</div>
+        </div>
+        <div class="course">
+          <div>
+            <div class="course-name">GRC Internship</div>
+            <div class="course-org">Three months — Zeedimension, in collaboration with DigiSkills Association</div>
+          </div>
+          <div class="course-tag">completed</div>
+        </div>
+        <div class="course">
+          <div>
+            <div class="course-name">C# with the Unity engine</div>
+            <div class="course-org">The Hope International Company</div>
+          </div>
+          <div class="course-tag">completed</div>
+        </div>
+        <div class="course">
+          <div>
+            <div class="course-name">RPA Training</div>
+            <div class="course-org">SDS</div>
+          </div>
+          <div class="course-tag">completed</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="section-head">
+      <div class="section-tag">Education</div>
+      <h2>Degree</h2>
+    </div>
+    <div class="section-body">
+      <div style="grid-column:2;">
+        <div class="entry" style="grid-template-columns:120px 1fr;">
+          <div class="entry-date">Oct 2021 —<br>Jun 2025</div>
+          <div>
+            <div class="entry-title">Bachelor's, Computer Information Systems <span class="entry-org">— The University of Jordan</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="activities">
+    <div class="section-head">
+      <div class="section-tag">Beyond work</div>
+      <h2>Activities</h2>
+    </div>
+    <div class="section-body">
+      <ul class="activity-list">
+        <li>Volunteer, <b>IEEE Student Branch Society</b></li>
+        <li>Team member, <b>Dimensions</b> — a student community and startup helping students learn about the game development industry</li>
+        <li>Organizer, Career Day with <b>IEEE Student Branch Society</b>, at King Abdullah II School of Information Technology</li>
+        <li>Former member, <b>KASIT</b> — a student community supporting students' learning process</li>
+        <li>Participant, <b>Jam3et Games</b> at Al-Hussein Technical University (HTU), Amman</li>
+        <li>Participant, <b>Pocket Gamer Connects Jordan</b>, Dead Sea</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="footer-inner">
+      <div class="section-tag">Contact</div>
+      <div class="cta">
+        <h2>Let's talk</h2>
+        <p>Reach out about a QA, testing, or mobile development role — or anything that could use a careful second look.</p>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:Deemaqandil6@gmail.com">Deemaqandil6@gmail.com</a>
+        <a href="tel:+962776155248">+962 776155248</a>
+        <a href="https://www.linkedin.com/in/deema-qandeel-9ba673244/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://github.com/Deemaqandeel" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="footer-note">Amman, Jordan — Based on CV last updated 2026</div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  (function(){
+    try{
+      var btn = document.getElementById('themeToggle');
+      var root = document.documentElement;
+      var saved = localStorage.getItem('theme');
+      if(saved) root.setAttribute('data-theme', saved);
+      btn.addEventListener('click', function(){
+        var current = root.getAttribute('data-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var effectiveDark = current ? current === 'dark' : prefersDark;
+        var next = effectiveDark ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try{ localStorage.setItem('theme', next); }catch(e){}
+      });
+    }catch(e){}
+  })();
+</script>
+
+</body>
+</html>
